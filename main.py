@@ -2,17 +2,6 @@ __author__ = 'Mauricio'
 from classes import sequence
 from classes import matrix
 
-#Main
-sequence1 = sequence("GCATGCU")
-sequence2 = sequence("GATTACA")
-
-#Variables where the aligned sequences will be stored
-align1 = ""
-align2 = ""
-
-#We create the matrix according to the length of the two sequences, and giving the scores that will be used for the scoring, match, mismatch and gap
-matrix = matrix(sequence1.get_length(), sequence2.get_length(),1,-1,-1)
-
 
 #Initialize matrix w/o recursive, only the first column and row are filled with the acumulated gap score
 def startAligning(seq1, seq2, r, c):
@@ -42,10 +31,19 @@ def calculateMatrix (seq1, seq2, r, c):
             #We call the function backtracking from the matrix class. Recursive function.
             align1, align2 = matrix.backtracking(seq1 ,seq2 ,r ,c, "", "" )
 
+#Main
+sequence1 = sequence(raw_input("Insert sequence1"))
+sequence2 = sequence(raw_input("Insert sequence2"))
 
+
+#Variables where the aligned sequences will be stored
+align1 = ""
+align2 = ""
+
+#We create the matrix according to the length of the two sequences, and giving the scores that will be used for the scoring, match, mismatch and gap
+matrix = matrix(sequence1.get_length(), sequence2.get_length(),1,-1,-1)
 #We initialize the process, givng the two sequences, and initial coordinates for the matrix
 startAligning(sequence1.get_sequence(),sequence2.get_sequence(),0,0)
-
 
 #print information
 matrix.print_matrix()
@@ -56,8 +54,4 @@ print"############Alignment#############"
 print align1
 print align2
 print"##################################"
-#print align1
-#print scoring matrix
-#matrix.print_matrix()
 
-#Print optimal alignment
