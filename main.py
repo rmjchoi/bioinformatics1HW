@@ -3,8 +3,8 @@ from classes import sequence
 from classes import matrix
 
 #Main
-sequence1 = sequence("GCATGCU")
-sequence2 = sequence("GATTACA")
+sequence1 = sequence(seqA)
+sequence2 = sequence(seqB)
 
 matrix = matrix(sequence1.get_length(), sequence2.get_length(),1,-1,-1)
 
