@@ -10,15 +10,11 @@ class sequence:
     def get_length(self):
         return len(self.sequence)
 
-<<<<<<< HEAD
     def get_char(self):
         return self.
 
-    #Add char function
-=======
     def set_sequence(self, seq):
         self.sequence = seq
->>>>>>> 40429b666bff74aac15ee5674538fa8fac0d5c25
 
     def add_char(self, char):
         newseq = char + self.get_sequence()
