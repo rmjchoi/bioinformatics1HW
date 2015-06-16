@@ -10,12 +10,12 @@ class sequence:
     def get_length(self):
         return len(self.sequence)
 
-<<<<<<< HEAD
-    def get_char(self):
-        return self.
+    def get_char(self,x):
+        return self.sequence[x]
+    # def get_char(self):
+    #     return self.
 
-=======
->>>>>>> 51e0628396eb4da3a66f70acab666bf3eb54c8f8
+
     def set_sequence(self, seq):
         self.sequence = seq
 
