@@ -69,3 +69,23 @@ class matrix:
 
     def get_gapscore(self):
         return self.gapscore
+
+    def backtracking(self, seq1, seq2, x, y, align1, align2):
+        #Backtracking function
+        #While the x and y coordinates dont reach zero, will compare the 3 possible ways for the alignment to happend
+        if x > 0 or y > 0:
+            if self.matrix[x-1][y-1] >= self.matrix[x][y-1] and self.matrix[x-1][y-1] >= self.matrix[x-1][y]:
+                align1 = seq1[y-1] + align1
+                align2 = seq2[x-1] + align2
+                return self.backtracking(seq1, seq2, x-1, y-1, align1, align2)
+            elif self.matrix[x-1][y] >= self.matrix[x][y-1] and self.matrix[x-1][y] >= self.matrix[x][y]:
+                align1 = "-" + align1
+                align2 = seq2[x-1] + align2
+                return self.backtracking(seq1, seq2, x-1, y, align1, align2)
+            elif self.matrix[x][y-1] >= self.matrix[x][y] and self.matrix[x][y-1] >= self.matrix[x-1][y]:
+                align1 = seq1[y-1] + align1
+                align2 = "-" + align2
+                return self.backtracking(seq1, seq2, x, y-1, align1, align2)
+        else:
+            return align1, align2
+
