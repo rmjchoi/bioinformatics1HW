@@ -54,3 +54,12 @@ class matrix:
                 self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.gapscore
             if (self.matrix[x][y+1] + self.gapscore) >= (self.matrix[x][y] + self.mismatchscore) and (self.matrix[x][y+1] + self.gapscore) >= (self.matrix[x+1][y] + self.gapscore):
                 self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapscore
+
+    def get_matchscore(self):
+        return self.matchscore
+
+    def get_mismatchscore(self):
+        return self.mismatchscore
+
+    def get_gapscore(self):
+        return self.gapscore
