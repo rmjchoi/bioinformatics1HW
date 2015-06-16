@@ -10,6 +10,9 @@ class sequence:
     def get_length(self):
         return len(self.sequence)
 
+    def get_char(self):
+        return self.
+
     #Add char function
 
     #Set sequence function
