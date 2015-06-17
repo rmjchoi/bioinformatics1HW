@@ -109,37 +109,38 @@ class matrix:
             self.matrix[0][y+1] and self.matrix[x+1][0]
 
             if a == b :
-                if (self.matrix[x][y]+self.matchscore) >= (self.matrix[x][y+1]+self.mismatchscore) and (self.matrix[x][y]+self.matchscore) >= (self.matrix[x+1][y]+self.mismatchscore)\
-                        and (self.matrix[x][y]+self.matchscore) >= 0:
-                    self.matrix[x+1][y+1] = self.matrix[x][y] + self.matchscore
-                if (self.matrix[x+1][y]+self.mismatchscore) >= (self.matrix[x][y+1]+self.mismatchscore) and (self.matrix[x+1][y]+self.mismatchscore) >= (self.matrix[x][y]+self.matchscore)\
-                        and (self.matrix[x+1][y]+self.mismatchscore) >= 0:
-                    self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.mismatchscore
-                if(self.matrix[x][y+1]+self.mismatchscore) >= (self.matrix[x+1][y]+self.mismatchscore) and (self.matrix[x][y+1]+self.mismatchscore) >= (self.matrix[x][y]+self.matchscore)\
-                        and (self.matrix[x][y+1]+self.mismatchscore) >= 0:
-                    self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapscore
-                if(self.matrix[x][y]+self.matchscore) <= 0 and (self.matrix[x+1][y]) <= 0 and (self.matrix[x][y+1] <= 0):
-                    self.matrix[x+1][y+1] = 0
+                if (self.matrix[x][y]+self.matchscore) >= (self.matrix[x][y+1]+self.mismatchscore) and (self.matrix[x][y]+self.matchscore) >= (self.matrix[x+1][y]+self.mismatchscore):
+                        if (self.matrix[x][y]+self.matchscore) >= 0:
+                            self.matrix[x+1][y+1] = self.matrix[x][y] + self.matchscore
+                        else :
+                            self.matrix[x+1][y+1] = 0
+                if (self.matrix[x+1][y]+self.mismatchscore) >= (self.matrix[x][y+1]+self.mismatchscore) and (self.matrix[x+1][y]+self.mismatchscore) >= (self.matrix[x][y]+self.matchscore):
+                        if (self.matrix[x+1][y]+self.mismatchscore) >= 0:
+                            self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.mismatchscore
+                        else :
+                            self.matrix[x+1][y+1] = 0
+                if(self.matrix[x][y+1]+self.mismatchscore) >= (self.matrix[x+1][y]+self.mismatchscore) and (self.matrix[x][y+1]+self.mismatchscore) >= (self.matrix[x][y]+self.matchscore):
+                        if (self.matrix[x][y+1]+self.mismatchscore) >= 0:
+                            self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.mismatchscore
+                        else :
+                            self.matrix[x+1][y+1] = 0
 
             if a != b :
-                if (self.matrix[x][y]+self.mismatchscore) >= (self.matrix[x][y+1]+self.mismatchscore) and (self.matrix[x][y]+self.mismatchscore) >= (self.matrix[x+1][y]+self.mismatchscore)\
-                        and (self.matrix[x][y]+self.mismatchscore) >= 0:
-                    self.matrix[x+1][y+1] = self.matrix[x][y] + self.mismatchscore
-                if (self.matrix[x+1][y]+self.mismatchscore) >= (self.matrix[x][y+1]+self.mismatchscore) and (self.matrix[x+1][y]+self.mismatchscore) >= (self.matrix[x][y]+self.mismatchscore)\
-                        and (self.matrix[x+1][y]+self.matchscore) >= 0:
-                    self.matrix[x+1][y+1] = self.matrix[x+1][y] +self.mismatchscore
-                if(self.matrix[x][y+1]+self.mismatchscore) >= (self.matrix[x+1][y]+self.mismatchscore) and (self.matrix[x][y+1]+self.mismatchscore) >= (self.matrix[x][y]+self.matchscore)\
-                        and (self.matrix[x][y+1]+self.mismatchscore) >= 0:
-                    self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.matchscore
-                if(self.matrix[x][y]+self.matchscore) <= 0 and (self.matrix[x+1][y]) <= 0 and (self.matrix[x][y+1]) <= 0:
-                    self.matrix[x+1][y+1] = 0
-
-
-            # if a == b :
-            #     if(self.matrix[x][y] + self.)
-            #
-            # elif a != b :
-
+                if (self.matrix[x][y]+self.mismatchscore) >= (self.matrix[x][y+1]+self.mismatchscore) and (self.matrix[x][y]+self.mismatchscore) >= (self.matrix[x+1][y]+self.mismatchscore):
+                        if (self.matrix[x][y]+self.mismatchscore) >= 0:
+                            self.matrix[x+1][y+1] = self.matrix[x][y] + self.mismatchscore
+                        else :
+                            self.matrix[x+1][y+1] = 0
+                if (self.matrix[x+1][y]+self.mismatchscore) >= (self.matrix[x][y+1]+self.mismatchscore) and (self.matrix[x+1][y]+self.mismatchscore) >= (self.matrix[x][y]+self.mismatchscore):
+                        if (self.matrix[x+1][y]+self.mismatchscore) >= 0:
+                            self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.mismatchscore
+                        else :
+                            self.matrix[x+1][y+1] = 0
+                if(self.matrix[x][y+1]+self.mismatchscore) >= (self.matrix[x+1][y]+self.mismatchscore) and (self.matrix[x][y+1]+self.mismatchscore) >= (self.matrix[x][y]+self.matchscore):
+                        if (self.matrix[x][y+1]+self.mismatchscore) >= 0:
+                            self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.mismatchscore
+                        else :
+                            self.matrix[x+1][y+1] = 0
 
     def get_matchscore(self):
         return self.matchscore
@@ -171,8 +172,7 @@ class matrix:
     def backtracking(self, seq1, seq2, x, y, align1, align2):
         #Backtracking function
         #While the x and y coordinates dont reach zero, will compare the 3 possible ways for the alignment to happend
-        if self.use_score == 1 or self.use_score == 2:
-            if x > 0 or y > 0:
+        if x > 0 or y > 0:
                 if self.matrix[x-1][y-1] >= self.matrix[x][y-1] and self.matrix[x-1][y-1] >= self.matrix[x-1][y]:
                     align1 = seq1[y-1] + align1
                     align2 = seq2[x-1] + align2
@@ -188,4 +188,4 @@ class matrix:
             else:
                 return align1, align2
 
-        # elif self.use_score == 3 :
+    
