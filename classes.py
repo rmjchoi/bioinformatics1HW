@@ -1,5 +1,6 @@
 __author__ = 'Mauricio'
-import math
+from numpy import unravel_index
+
 class sequence:
     def __init__(self, sequence):
         self.sequence = sequence
@@ -188,4 +189,14 @@ class matrix:
             else:
                 return align1, align2
 
-    
+    def backtrackLocal(self, seq1, seq2, x, y, align1, align2):
+        
+        # Get the index of maximum value
+        x, y = max(x), max(y)
+        self.backtracking(seq1,seq2,x,y,align1,align2)
+
+
+
+
+
+
