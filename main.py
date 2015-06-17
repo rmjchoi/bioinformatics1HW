@@ -37,6 +37,7 @@ sequence2 = sequence(raw_input("Insert sequence 2: "))
 print "Please select your scoring scheme"
 print "1. Basic Scoring Scheme"
 print "2. Gap Scoring Scheme (Penalty for every new gap)"
+print "3. Local Scoring Scheme (Smith - Waterman Algorithm)"
 scorescheme = raw_input("Option:  ")
 
 #We create the matrix according to the length of the two sequences
@@ -44,18 +45,23 @@ matrix = matrix(sequence1.get_length(), sequence2.get_length())
 
 #Normal Score
 if scorescheme == "1":
+    matrix.use_score(1)
     matrix.set_matchscore(1)
     matrix.set_mismatchscore(0)
     matrix.set_gapscore(-1)
 
 #Gap Scoring Scheme
 elif scorescheme == "2":
-    matrix.set_usegapscore(True)
+    matrix.use_score(2)
     matrix.set_matchscore(1)
     matrix.set_mismatchscore(0)
     matrix.set_gapscore(-1)
     matrix.set_gapstartscore(-2)
 
+elif scorescheme == "3" :
+    matrix.use_score(3)
+    matrix.set_matchscore(10)
+    matrix.set_mismatchscore(-5)
 
 #Variables where the aligned sequences will be stored
 align1 = ""

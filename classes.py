@@ -1,5 +1,5 @@
 __author__ = 'Mauricio'
-
+import math
 class sequence:
     def __init__(self, sequence):
         self.sequence = sequence
@@ -30,7 +30,7 @@ class matrix:
         self.mismatchscore = 0
         self.gapscore = -1
         self.gapstartscore = -2
-        self.use_gapstartscore = False
+        self.use_score = 0
         self.gapstartscore_flag = "N"
 
     def get_position(self, x, y):
@@ -44,7 +44,7 @@ class matrix:
             print row
 
     def set_score(self,a,b,x,y):
-        if self.use_gapstartscore == False:
+        if self.use_score == 1:
             if a == b: #if it the characters match
                 #Get the highest score according to the highest position
                 if (self.matrix[x][y] + self.matchscore) >= (self.matrix[x][y + 1] + self.gapscore) and (self.matrix[x][y] + self.matchscore) >= (self.matrix[x+1][y] + self.gapscore):
@@ -66,7 +66,7 @@ class matrix:
                     self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapscore
 
 
-        if self.use_gapstartscore == True:
+        if self.use_score == 2:
             if a == b: #if it the characters match
                 #Get the highest score according to the highest position
                 if (self.matrix[x][y] + self.matchscore) >= (self.matrix[x][y + 1] + self.gapstartscore) and (self.matrix[x][y] + self.matchscore) >= (self.matrix[x+1][y] + self.gapstartscore):
@@ -105,6 +105,42 @@ class matrix:
                         self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapstartscore
                         self.gapstartscore_flag = "L"
 
+        if self.use_score == 3:
+            self.matrix[0][y+1] and self.matrix[x+1][0]
+
+            if a == b :
+                if (self.matrix[x][y]+self.matchscore) >= (self.matrix[x][y+1]+self.mismatchscore) and (self.matrix[x][y]+self.matchscore) >= (self.matrix[x+1][y]+self.mismatchscore)\
+                        and (self.matrix[x][y]+self.matchscore) >= 0:
+                    self.matrix[x+1][y+1] = self.matrix[x][y] + self.matchscore
+                if (self.matrix[x+1][y]+self.mismatchscore) >= (self.matrix[x][y+1]+self.mismatchscore) and (self.matrix[x+1][y]+self.mismatchscore) >= (self.matrix[x][y]+self.matchscore)\
+                        and (self.matrix[x+1][y]+self.mismatchscore) >= 0:
+                    self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.mismatchscore
+                if(self.matrix[x][y+1]+self.mismatchscore) >= (self.matrix[x+1][y]+self.mismatchscore) and (self.matrix[x][y+1]+self.mismatchscore) >= (self.matrix[x][y]+self.matchscore)\
+                        and (self.matrix[x][y+1]+self.mismatchscore) >= 0:
+                    self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapscore
+                if(self.matrix[x][y]+self.matchscore) <= 0 and (self.matrix[x+1][y]) <= 0 and (self.matrix[x][y+1] <= 0):
+                    self.matrix[x+1][y+1] = 0
+
+            if a != b :
+                if (self.matrix[x][y]+self.mismatchscore) >= (self.matrix[x][y+1]+self.mismatchscore) and (self.matrix[x][y]+self.mismatchscore) >= (self.matrix[x+1][y]+self.mismatchscore)\
+                        and (self.matrix[x][y]+self.mismatchscore) >= 0:
+                    self.matrix[x+1][y+1] = self.matrix[x][y] + self.mismatchscore
+                if (self.matrix[x+1][y]+self.mismatchscore) >= (self.matrix[x][y+1]+self.mismatchscore) and (self.matrix[x+1][y]+self.mismatchscore) >= (self.matrix[x][y]+self.mismatchscore)\
+                        and (self.matrix[x+1][y]+self.matchscore) >= 0:
+                    self.matrix[x+1][y+1] = self.matrix[x+1][y] +self.mismatchscore
+                if(self.matrix[x][y+1]+self.mismatchscore) >= (self.matrix[x+1][y]+self.mismatchscore) and (self.matrix[x][y+1]+self.mismatchscore) >= (self.matrix[x][y]+self.matchscore)\
+                        and (self.matrix[x][y+1]+self.mismatchscore) >= 0:
+                    self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.matchscore
+                if(self.matrix[x][y]+self.matchscore) <= 0 and (self.matrix[x+1][y]) <= 0 and (self.matrix[x][y+1]) <= 0:
+                    self.matrix[x+1][y+1] = 0
+
+
+            # if a == b :
+            #     if(self.matrix[x][y] + self.)
+            #
+            # elif a != b :
+
+
     def get_matchscore(self):
         return self.matchscore
 
@@ -135,19 +171,21 @@ class matrix:
     def backtracking(self, seq1, seq2, x, y, align1, align2):
         #Backtracking function
         #While the x and y coordinates dont reach zero, will compare the 3 possible ways for the alignment to happend
-        if x > 0 or y > 0:
-            if self.matrix[x-1][y-1] >= self.matrix[x][y-1] and self.matrix[x-1][y-1] >= self.matrix[x-1][y]:
-                align1 = seq1[y-1] + align1
-                align2 = seq2[x-1] + align2
-                return self.backtracking(seq1, seq2, x-1, y-1, align1, align2)
-            elif self.matrix[x-1][y] >= self.matrix[x][y-1] and self.matrix[x-1][y] >= self.matrix[x][y]:
-                align1 = "-" + align1
-                align2 = seq2[x-1] + align2
-                return self.backtracking(seq1, seq2, x-1, y, align1, align2)
-            elif self.matrix[x][y-1] >= self.matrix[x][y] and self.matrix[x][y-1] >= self.matrix[x-1][y]:
-                align1 = seq1[y-1] + align1
-                align2 = "-" + align2
-                return self.backtracking(seq1, seq2, x, y-1, align1, align2)
-        else:
-            return align1, align2
+        if self.use_score == 1 or self.use_score == 2:
+            if x > 0 or y > 0:
+                if self.matrix[x-1][y-1] >= self.matrix[x][y-1] and self.matrix[x-1][y-1] >= self.matrix[x-1][y]:
+                    align1 = seq1[y-1] + align1
+                    align2 = seq2[x-1] + align2
+                    return self.backtracking(seq1, seq2, x-1, y-1, align1, align2)
+                elif self.matrix[x-1][y] >= self.matrix[x][y-1] and self.matrix[x-1][y] >= self.matrix[x][y]:
+                    align1 = "-" + align1
+                    align2 = seq2[x-1] + align2
+                    return self.backtracking(seq1, seq2, x-1, y, align1, align2)
+                elif self.matrix[x][y-1] >= self.matrix[x][y] and self.matrix[x][y-1] >= self.matrix[x-1][y]:
+                    align1 = seq1[y-1] + align1
+                    align2 = "-" + align2
+                    return self.backtracking(seq1, seq2, x, y-1, align1, align2)
+            else:
+                return align1, align2
 
+        # elif self.use_score == 3 :
