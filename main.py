@@ -32,18 +32,40 @@ def calculateMatrix (seq1, seq2, r, c):
             align1, align2 = matrix.backtracking(seq1 ,seq2 ,r ,c, "", "" )
 
 #Main
-sequence1 = sequence(raw_input("Insert sequence1"))
-sequence2 = sequence(raw_input("Insert sequence2"))
+sequence1 = sequence(raw_input("Insert sequence 1: "))
+sequence2 = sequence(raw_input("Insert sequence 2: "))
+print "Please select your scoring scheme"
+print "1. Basic Scoring Scheme"
+print "2. Gap Scoring Scheme (Penalty for every new gap)"
+scorescheme = raw_input("Option:  ")
+
+#We create the matrix according to the length of the two sequences
+matrix = matrix(sequence1.get_length(), sequence2.get_length())
+
+#Normal Score
+if scorescheme == "1":
+    matrix.set_matchscore(1)
+    matrix.set_mismatchscore(0)
+    matrix.set_gapscore(-1)
+
+#Gap Scoring Scheme
+elif scorescheme == "2":
+    matrix.set_usegapscore(True)
+    matrix.set_matchscore(1)
+    matrix.set_mismatchscore(0)
+    matrix.set_gapscore(-1)
+    matrix.set_gapstartscore(-2)
 
 
 #Variables where the aligned sequences will be stored
 align1 = ""
 align2 = ""
 
-#We create the matrix according to the length of the two sequences, and giving the scores that will be used for the scoring, match, mismatch and gap
-matrix = matrix(sequence1.get_length(), sequence2.get_length(),1,-1,-1)
+
 #We initialize the process, givng the two sequences, and initial coordinates for the matrix
 startAligning(sequence1.get_sequence(),sequence2.get_sequence(),0,0)
+
+
 
 #print information
 matrix.print_matrix()
