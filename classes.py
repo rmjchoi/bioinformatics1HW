@@ -45,66 +45,42 @@ class matrix:
             print row
 
     def set_score(self,a,b,x,y):
+        score = 0;
+        #Checks if the characters are a match or not, and assign the value to score, so we can use during the scoring system
+        if a == b: #if it the characters match
+            score = self.matchscore
+        else:
+            score = self.mismatchscore
+
+        #Normal scoring system
         if self.use_score == 1:
-            if a == b: #if it the characters match
-                #Get the highest score according to the highest position
-                if (self.matrix[x][y] + self.matchscore) >= (self.matrix[x][y + 1] + self.gapscore) and (self.matrix[x][y] + self.matchscore) >= (self.matrix[x+1][y] + self.gapscore):
-                    self.matrix[x+1][y+1] = self.matrix[x][y] + self.matchscore
-                if (self.matrix[x+1][y] + self.gapscore) >= (self.matrix[x][y + 1] + self.gapscore) and (self.matrix[x+1][y] + self.gapscore) >= (self.matrix[x][y] + self.matchscore):
-                    self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.gapscore
-                if (self.matrix[x][y+1] + self.gapscore) >= (self.matrix[x][y] + self.matchscore) and (self.matrix[x][y+1] + self.gapscore) >= (self.matrix[x+1][y] + self.gapscore):
-                    self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapscore
+            #Get the highest score according to the highest position
+            if (self.matrix[x][y] + score) >= (self.matrix[x][y + 1] + self.gapscore) and (self.matrix[x][y] + score) >= (self.matrix[x+1][y] + self.gapscore):
+                self.matrix[x+1][y+1] = self.matrix[x][y] + score
+            if (self.matrix[x+1][y] + self.gapscore) >= (self.matrix[x][y + 1] + self.gapscore) and (self.matrix[x+1][y] + self.gapscore) >= (self.matrix[x][y] + score):
+                self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.gapscore
+            if (self.matrix[x][y+1] + self.gapscore) >= (self.matrix[x][y] + score) and (self.matrix[x][y+1] + self.gapscore) >= (self.matrix[x+1][y] + self.gapscore):
+                self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapscore
 
-            #If letter A and letter B are a mismatch:
-            elif a != b:
-                #Get the highest score according to the highest position
-
-                if (self.matrix[x][y] + self.mismatchscore) >= (self.matrix[x][y + 1] + self.gapscore) and (self.matrix[x][y] + self.mismatchscore) >= (self.matrix[x+1][y] + self.gapscore):
-                    self.matrix[x+1][y+1] = self.matrix[x][y] + self.mismatchscore
-                if (self.matrix[x+1][y] + self.gapscore) >= (self.matrix[x][y + 1] + self.gapscore) and (self.matrix[x+1][y] + self.gapscore) >= (self.matrix[x][y] + self.mismatchscore):
-                    self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.gapscore
-                if (self.matrix[x][y+1] + self.gapscore) >= (self.matrix[x][y] + self.mismatchscore) and (self.matrix[x][y+1] + self.gapscore) >= (self.matrix[x+1][y] + self.gapscore):
-                    self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapscore
-
-
+        #Gap penalty scoring system
         if self.use_score == 2:
-            if a == b: #if it the characters match
-                #Get the highest score according to the highest position
-                if (self.matrix[x][y] + self.matchscore) >= (self.matrix[x][y + 1] + self.gapstartscore) and (self.matrix[x][y] + self.matchscore) >= (self.matrix[x+1][y] + self.gapstartscore):
-                    self.matrix[x+1][y+1] = self.matrix[x][y] + self.matchscore
-                    self.gapstartscore_flag = "N"
-                if (self.matrix[x+1][y] + self.gapstartscore) >= (self.matrix[x][y + 1] + self.gapstartscore) and (self.matrix[x+1][y] + self.gapstartscore) >= (self.matrix[x][y] + self.matchscore):
-                    if self.gapstartscore_flag == "T":
-                        self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.gapscore
-                    else:
-                        self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.gapstartscore
-                        self.gapstartscore_flag = "T"
-                if (self.matrix[x][y+1] + self.gapstartscore) >= (self.matrix[x][y] + self.matchscore) and (self.matrix[x][y+1] + self.gapstartscore) >= (self.matrix[x+1][y] + self.gapstartscore):
-                    if self.gapstartscore_flag == "L":
-                        self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapscore
-                    else:
-                        self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapstartscore
-                        self.gapstartscore_flag = "L"
-
-            #If letter A and letter B are a mismatch:
-            elif a != b:
-                #Get the highest score according to the highest position
-
-                if (self.matrix[x][y] + self.mismatchscore) >= (self.matrix[x][y + 1] + self.gapstartscore) and (self.matrix[x][y] + self.mismatchscore) >= (self.matrix[x+1][y] + self.gapstartscore):
-                    self.matrix[x+1][y+1] = self.matrix[x][y] + self.mismatchscore
-                    self.gapstartscore_flag = "N"
-                if (self.matrix[x+1][y] + self.gapstartscore) >= (self.matrix[x][y + 1] + self.gapstartscore) and (self.matrix[x+1][y] + self.gapstartscore) >= (self.matrix[x][y] + self.mismatchscore):
-                    if self.gapstartscore_flag == "T":
-                        self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.gapscore
-                    else:
-                        self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.gapstartscore
-                        self.gapstartscore_flag = "T"
-                if (self.matrix[x][y+1] + self.gapstartscore) >= (self.matrix[x][y] + self.mismatchscore) and (self.matrix[x][y+1] + self.gapstartscore) >= (self.matrix[x+1][y] + self.gapstartscore):
-                    if self.gapstartscore_flag == "L":
-                        self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapscore
-                    else:
-                        self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapstartscore
-                        self.gapstartscore_flag = "L"
+        #We keep track of the last gap on the gapstartscore_flag variable
+            #Get the highest score according to the highest position
+            if (self.matrix[x][y] + score) >= (self.matrix[x][y + 1] + self.gapstartscore) and (self.matrix[x][y] + score) >= (self.matrix[x+1][y] + self.gapstartscore):
+                self.matrix[x+1][y+1] = self.matrix[x][y] + score
+                self.gapstartscore_flag = "N"
+            if (self.matrix[x+1][y] + self.gapstartscore) >= (self.matrix[x][y + 1] + self.gapstartscore) and (self.matrix[x+1][y] + self.gapstartscore) >= (self.matrix[x][y] + score):
+                if self.gapstartscore_flag == "T":
+                    self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.gapscore
+                else:
+                    self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.gapstartscore
+                    self.gapstartscore_flag = "T"
+            if (self.matrix[x][y+1] + self.gapstartscore) >= (self.matrix[x][y] + score) and (self.matrix[x][y+1] + self.gapstartscore) >= (self.matrix[x+1][y] + self.gapstartscore):
+                if self.gapstartscore_flag == "L":
+                    self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapscore
+                else:
+                    self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapstartscore
+                    self.gapstartscore_flag = "L"
 
         if self.use_score == 3:
             self.matrix[0][y+1] and self.matrix[x+1][0]
@@ -164,6 +140,9 @@ class matrix:
     def get_gapstartscore(self):
         return self.gapstartscore
 
+    def set_scoresystem(self,number):
+        self.use_score = number
+
     def set_gapstartscore(self,score):
         self.gapstartscore = score
 
@@ -186,7 +165,7 @@ class matrix:
                     align1 = seq1[y-1] + align1
                     align2 = "-" + align2
                     return self.backtracking(seq1, seq2, x, y-1, align1, align2)
-            else:
+        else:
                 return align1, align2
 
     def backtrackLocal(self, seq1, seq2, x, y, align1, align2):
