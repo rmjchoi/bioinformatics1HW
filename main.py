@@ -45,21 +45,21 @@ matrix = matrix(sequence1.get_length(), sequence2.get_length())
 
 #Normal Score
 if scorescheme == "1":
-    matrix.use_score(1)
+    matrix.set_scoresystem(1)
     matrix.set_matchscore(1)
     matrix.set_mismatchscore(0)
     matrix.set_gapscore(-1)
 
 #Gap Scoring Scheme
 elif scorescheme == "2":
-    matrix.use_score(2)
+    matrix.set_scoresystem(2)
     matrix.set_matchscore(1)
     matrix.set_mismatchscore(0)
     matrix.set_gapscore(-1)
     matrix.set_gapstartscore(-2)
 
 elif scorescheme == "3" :
-    matrix.use_score(3)
+    matrix.set_scoresystem(3)
     matrix.set_matchscore(10)
     matrix.set_mismatchscore(-5)
 
