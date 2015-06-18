@@ -1,5 +1,4 @@
 __author__ = 'Mauricio'
-from numpy import unravel_index
 
 class sequence:
     def __init__(self, sequence):
@@ -44,6 +43,21 @@ class matrix:
         for row in self.matrix:
             print row
 
+    def get_maxIndex(self, seq1, seq2):
+        max = 0
+        # indexR = 0 indexC = 0
+        # Searching for the maximum value and it's position
+        x, y = len(seq1), len(seq2)
+        for j in range(x+1):
+             for i in range(y+1):
+                if max < self.matrix[i][j]:
+                    indexR,indexC  = i,j
+                    max = self.matrix[i][j]
+        return indexR,indexC
+
+    def get_scoresystem(self):
+        return self.use_score
+
     def set_score(self,a,b,x,y):
         score = 0;
         #Checks if the characters are a match or not, and assign the value to score, so we can use during the scoring system
@@ -82,24 +96,24 @@ class matrix:
                     self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapstartscore
                     self.gapstartscore_flag = "L"
 
+        #Local alignment scoring, if there is a negative score, convert to zero
         if self.use_score == 3:
-            self.matrix[0][y+1] and self.matrix[x+1][0]
+            if (self.matrix[x][y] + score) >= (self.matrix[x][y + 1] + self.gapscore) and (self.matrix[x][y] + score) >= (self.matrix[x+1][y] + self.gapscore):
+                if (self.matrix[x][y] + score) >= 0:
+                    self.matrix[x+1][y+1] = self.matrix[x][y] + score
+                else :
+                    self.matrix[x+1][y+1] = 0
+            if (self.matrix[x+1][y] + self.gapscore) >= (self.matrix[x][y + 1] + self.gapscore) and (self.matrix[x+1][y] + self.gapscore) >= (self.matrix[x][y] + score):
+                if (self.matrix[x+1][y] + self.gapscore) >= 0:
+                    self.matrix[x+1][y+1] = self.matrix[x+1][y] + self.gapscore
+                else :
+                    self.matrix[x+1][y+1] = 0
+            if (self.matrix[x][y+1] + self.gapscore) >= (self.matrix[x][y] + score) and (self.matrix[x][y+1] + self.gapscore) >= (self.matrix[x+1][y] + self.gapscore):
+                if (self.matrix[x][y+1] + self.gapscore) >= 0:
+                    self.matrix[x+1][y+1] = self.matrix[x][y+1] + self.gapscore
+                else :
+                    self.matrix[x+1][y+1] = 0
 
-                if (self.matrix[x][y] + score) >= (self.matrix[x][y+1] + score) and (self.matrix[x][y] + score) >= (self.matrix[x+1][y] + score):
-                        if (self.matrix[x][y] + score) >= 0:
-                            self.matrix[x+1][y+1] = self.matrix[x][y] + score
-                        else :
-                            self.matrix[x+1][y+1] = 0
-                if (self.matrix[x+1][y] + score) >= (self.matrix[x][y+1] + score) and (self.matrix[x+1][y] + score) >= (self.matrix[x][y] + score):
-                        if (self.matrix[x+1][y] + score) >= 0:
-                            self.matrix[x+1][y+1] = self.matrix[x+1][y] + score
-                        else :
-                            self.matrix[x+1][y+1] = 0
-                if(self.matrix[x][y+1] + score) >= (self.matrix[x+1][y] + score) and (self.matrix[x][y+1] + score) >= (self.matrix[x][y] + score):
-                        if (self.matrix[x][y+1] + score) >= 0:
-                            self.matrix[x+1][y+1] = self.matrix[x][y+1] + score
-                        else :
-                            self.matrix[x+1][y+1] = 0
 
     def get_matchscore(self):
         return self.matchscore
@@ -134,27 +148,55 @@ class matrix:
     def backtracking(self, seq1, seq2, x, y, align1, align2):
         #Backtracking function
         #While the x and y coordinates dont reach zero, will compare the 3 possible ways for the alignment to happend
-        if x > 0 or y > 0:
-                if self.matrix[x-1][y-1] >= self.matrix[x][y-1] and self.matrix[x-1][y-1] >= self.matrix[x-1][y]:
-                    align1 = seq1[y-1] + align1
-                    align2 = seq2[x-1] + align2
-                    return self.backtracking(seq1, seq2, x-1, y-1, align1, align2)
-                elif self.matrix[x-1][y] >= self.matrix[x][y-1] and self.matrix[x-1][y] >= self.matrix[x][y]:
-                    align1 = "-" + align1
-                    align2 = seq2[x-1] + align2
-                    return self.backtracking(seq1, seq2, x-1, y, align1, align2)
-                elif self.matrix[x][y-1] >= self.matrix[x][y] and self.matrix[x][y-1] >= self.matrix[x-1][y]:
-                    align1 = seq1[y-1] + align1
-                    align2 = "-" + align2
-                    return self.backtracking(seq1, seq2, x, y-1, align1, align2)
-        else:
-                return align1, align2
 
-    def backtrackLocal(self, seq1, seq2, x, y, align1, align2):
-        x , y = len(matrix), len(matrix[0])
-        # Get the index of maximum value
-        x, y = max(x), max(y)
-        self.backtracking(seq1,seq2,x,y,align1,align2)
+        #Same backtracking for basic score and gap scoring system
+        if self.use_score == 1 or self.use_score == 2:
+            if x > 0 or y > 0:
+                 #  walk towards the highest score
+                    if self.matrix[x-1][y-1] >= self.matrix[x][y-1] and self.matrix[x-1][y-1] >= self.matrix[x-1][y]:
+                        align1 = seq1[y-1] + align1
+                        align2 = seq2[x-1] + align2
+                        return self.backtracking(seq1, seq2, x-1, y-1, align1, align2)
+                    elif self.matrix[x-1][y] >= self.matrix[x][y-1] and self.matrix[x-1][y] >= self.matrix[x][y]:
+                        align1 = "-" + align1
+                        align2 = seq2[x-1] + align2
+                        return self.backtracking(seq1, seq2, x-1, y, align1, align2)
+                    elif self.matrix[x][y-1] >= self.matrix[x][y] and self.matrix[x][y-1] >= self.matrix[x-1][y]:
+                        align1 = seq1[y-1] + align1
+                        align2 = "-" + align2
+                        return self.backtracking(seq1, seq2, x, y-1, align1, align2)
+            else:
+                    return align1, align2
+
+        #Backtracking for local scoring scheme
+        if self.use_score == 3:
+            spaces = ""
+            if self.matrix[x][y] == 0:
+                c,r = self.get_maxIndex(seq1,seq2)
+                #We calculate the spaces needed for visual alignment
+                if len (seq1[:y]) > len(seq2[:x]):
+                    spaces = " " * len (seq1[:y])
+                    return seq1[:y] + align1 + seq1[r:], spaces + seq2[:x] + align2 + seq2[c:]
+                elif len (seq1[:y]) <  len(seq2[:x]):
+                    spaces = " " * len (seq2[:x])
+                    return spaces+ seq1[:y] + align1 + seq1[r:],seq2[:x] + align2 + seq2[c:]
+                else:
+                    return seq1[:y] + align1 + seq1[r:], seq2[:x] + align2 + seq2[c:]
+            #  walk towards the highest score
+            elif x > 0 or y > 0:
+                    if self.matrix[x-1][y-1] >= self.matrix[x][y-1] and self.matrix[x-1][y-1] >= self.matrix[x-1][y]:
+                        align1 = seq1[y-1] + align1
+                        align2 = seq2[x-1] + align2
+                        return self.backtracking(seq1, seq2, x-1, y-1, align1, align2)
+                    elif self.matrix[x-1][y] >= self.matrix[x][y-1] and self.matrix[x-1][y] >= self.matrix[x][y]:
+                        align1 = "-" + align1
+                        align2 = seq2[x-1] + align2
+                        return self.backtracking(seq1, seq2, x-1, y, align1, align2)
+                    elif self.matrix[x][y-1] >= self.matrix[x][y] and self.matrix[x][y-1] >= self.matrix[x-1][y]:
+                        align1 = seq1[y-1] + align1
+                        align2 = "-" + align2
+                        return self.backtracking(seq1, seq2, x, y-1, align1, align2)
+            # either side
 
 
 

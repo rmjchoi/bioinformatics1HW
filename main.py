@@ -5,13 +5,21 @@ from classes import matrix
 
 #Initialize matrix w/o recursive, only the first column and row are filled with the acumulated gap score
 def startAligning(seq1, seq2, r, c):
-    matrix.set_position(0,0,0)
-    for c in range(1,sequence1.get_length()+1):
-        matrix.set_position(r,c,matrix.get_position(r,c-1) + matrix.get_gapscore())
-    for r in range(1,sequence2.get_length()+1):
-        matrix.set_position(r,0,matrix.get_position(r-1,0) + matrix.get_gapscore())
-    calculateMatrix(seq1,seq2,0,0)
+        matrix.set_position(0,0,0)
+        for c in range(1,sequence1.get_length()+1):
+            #If we use basic or gap score, initialize columns with gap values
+            if matrix.get_scoresystem() == 1 or matrix.get_scoresystem() == 2:
+                matrix.set_position(r,c,matrix.get_position(r,c-1) + matrix.get_gapscore())
+            #If we use local alignment, initialize with zeros
+            elif matrix.get_scoresystem() == 3:
+                matrix.set_position(r,c,0)
 
+        for r in range(1,sequence2.get_length()+1):
+            if matrix.get_scoresystem() == 1 or matrix.get_scoresystem() == 2:
+                matrix.set_position(r,0,matrix.get_position(r-1,0) + matrix.get_gapscore())
+            elif matrix.get_scoresystem() == 3:
+                matrix.set_position(r,0,0)
+        calculateMatrix(seq1,seq2,0,0)
 
 #Recursive function, we calculate the entire matrix, using the function set_score from the matrix class
 def calculateMatrix (seq1, seq2, r, c):
@@ -29,6 +37,10 @@ def calculateMatrix (seq1, seq2, r, c):
             calculateMatrix(seq1, seq2, r, 0)
         else:
             #We call the function backtracking from the matrix class. Recursive function.
+            if matrix.get_scoresystem() == 3:
+                r,c = matrix.get_maxIndex(seq1,seq2)
+                print r, c
+
             align1, align2 = matrix.backtracking(seq1 ,seq2 ,r ,c, "", "" )
 
 #Main
@@ -58,10 +70,12 @@ elif scorescheme == "2":
     matrix.set_gapscore(-1)
     matrix.set_gapstartscore(-2)
 
+#Local alignment score
 elif scorescheme == "3" :
     matrix.set_scoresystem(3)
     matrix.set_matchscore(10)
-    matrix.set_mismatchscore(-5)
+    matrix.set_mismatchscore(-7)
+    matrix.set_gapscore(-7)
 
 #Variables where the aligned sequences will be stored
 align1 = ""
