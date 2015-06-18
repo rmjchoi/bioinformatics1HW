@@ -190,7 +190,7 @@ class matrix:
                 return align1, align2
 
     def backtrackLocal(self, seq1, seq2, x, y, align1, align2):
-        
+        x , y = len(matrix), len(matrix[0])
         # Get the index of maximum value
         x, y = max(x), max(y)
         self.backtracking(seq1,seq2,x,y,align1,align2)
